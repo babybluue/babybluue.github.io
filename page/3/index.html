@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="babyblue的个人博客,学习和扯淡 "><meta name="keywords" content="blog,博客,程序员,记录,技术,学习 "><link rel="shortcut icon" href="/images/favicon.ico"><link rel="stylesheet" href="/style/style.css"><link rel="stylesheet" href="/style/highlight.css"><link rel="stylesheet" href="/fancybox/jquery.fancybox-1.3.4.css"><title>Babyblue</title><script>
+      document.onreadystatechange = () => { if (700 < document.body.clientWidth) {  const t = document.querySelector('.header-bar'); (t.style.background = '#91C4E2'),'interactive' == document.readyState && ((t.style.transition = 'width 1.4s ease-in-out'), (t.style.width = '67%')),'complete' == document.readyState &&((t.style.transition = 'width 0.3s ease-in-out'), (t.style.width = '100%'), setTimeout(() => { t.setAttribute( 'style',  "transition:width 0s;width:0;background:''"  );  }, 500)); } };
+    </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="header-bar"></div><div class="main-body"><nav><div class="header"> <a href="/about"><img src="/images/avtar.jpg" class="avtar"></a></div><div class="last-modified disappear">Last-modified<small></small></div><ul><li class="line-index"> <a href="/">主页</a></li><li> <a href="/archives/">归档</a></li><li> <a href="/about">关于</a></li></ul></nav><div><div class="index-main"><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="/posts/614ea15c">Javascript Date对象</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E4%BB%80%E4%B9%88%E5%8F%AB%E4%BB%96%E5%A6%88%E7%9A%84JS/">什么叫他妈的JS</a></div></div><div class="card-content"><p>创建一个新 Date 对象的唯一方式是通过 new 操作符，若将它作为常规函数调用将返回一个字符串。</p><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> time1 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+<span class="hljs-built_in">console</span>.log(time1);
+<span class="hljs-comment">//Mon May 17 2021 13:57:48 GMT+0800 (中国标准时间)</span>
+<span class="hljs-keyword">typeof</span> time1;
+<span class="hljs-comment">//&quot;string&quot;</span>
+
+<span class="hljs-keyword">let</span> time2 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+<span class="hljs-built_in">console</span>.log(time2);
+<span class="hljs-comment">//Mon May 17 2021 13:57:48 GMT+0800 (中国标准时间)</span>
+<span class="hljs-keyword">typeof</span> time2;
+<span class="hljs-comment">//&quot;object&quot;</span></code></pre><div class="read-more"> <a href="/posts/614ea15c">More...</a></div></div><div class="time"> <small>2021-05-17 10:10</small></div></div></div><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="/posts/1dcf8778">html的dataset属性</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/html/">html</a></div></div><div class="card-content"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span>
+  * &#123;
+<span class="css">    <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;</span>
+<span class="css">    <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;</span>
+  &#125;
+  .content &#123;
+<span class="css">    <span class="hljs-attribute">padding</span>: <span class="hljs-number">200px</span>;</span>
+<span class="css">    <span class="hljs-attribute">text-align</span>: center;</span>
+<span class="css">    <span class="hljs-attribute">width</span>: <span class="hljs-number">800px</span>;</span>
+<span class="css">    <span class="hljs-attribute">height</span>: <span class="hljs-number">100vh</span>;</span>
+<span class="css">    <span class="hljs-attribute">margin</span>: auto;</span>
+  &#125;
+<span class="css">  <span class="hljs-selector-tag">button</span> &#123;</span>
+<span class="css">    <span class="hljs-attribute">width</span>: <span class="hljs-number">80px</span>;</span>
+<span class="css">    <span class="hljs-attribute">height</span>: <span class="hljs-number">40px</span>;</span>
+<span class="css">    <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span>;</span>
+<span class="css">    <span class="hljs-attribute">outline</span>: none;</span>
+<span class="css">    <span class="hljs-attribute">border</span>: none;</span>
+<span class="css">    <span class="hljs-attribute">cursor</span>: pointer</span>
+<span class="css">    <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">5px</span>;</span>
+  &#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;content&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>click<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>click<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>click<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>click<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>click<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
+<span class="javascript">    <span class="hljs-keyword">const</span> button = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">&#x27;button&#x27;</span>);</span>
+<span class="javascript">    <span class="hljs-keyword">const</span> color = [</span>
+<span class="javascript">      <span class="hljs-string">&#x27;lightblue&#x27;</span>,</span>
+<span class="javascript">      <span class="hljs-string">&#x27;lightcoral&#x27;</span>,</span>
+<span class="javascript">      <span class="hljs-string">&#x27;lightcyan&#x27;</span>,</span>
+<span class="javascript">      <span class="hljs-string">&#x27;lightpink&#x27;</span>,</span>
+<span class="javascript">      <span class="hljs-string">&#x27;lightgreen&#x27;</span>,</span>
+    ];
+<span class="javascript">    color.map(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;</span>
+      button[index].dataset.color = item;
+      button[index].style.background = item;
+      button[index].textContent = item;
+    &#125;);
+<span class="javascript">    button.forEach(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;</span>
+<span class="javascript">      item.addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;</span>
+<span class="javascript">        <span class="hljs-keyword">const</span> btnColor = item.dataset.color;</span>
+<span class="javascript">        <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;body&#x27;</span>).style.background = btnColor;</span>
+      &#125;);
+    &#125;);
+  <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre></div><div class="time"> <small>2021-05-14 15:46</small></div></div></div><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="/posts/cd80a896">原生js修改css样式</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/html/">html</a></div></div><div class="card-content"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;demo&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;font-size: 20px&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>hello wrold<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
+<span class="javascript">    <span class="hljs-keyword">const</span> demo = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;.demo&#x27;</span>);</span>
+<span class="javascript">    <span class="hljs-comment">//1</span></span>
+<span class="javascript">    demo.style.background = <span class="hljs-string">&#x27;lightgray&#x27;</span>;</span>
+<span class="javascript">    <span class="hljs-comment">//2</span></span>
+<span class="javascript">    demo.style.setProperty(<span class="hljs-string">&#x27;background&#x27;</span>, <span class="hljs-string">&#x27;lightcoral&#x27;</span>);</span>
+<span class="javascript">    <span class="hljs-comment">//3</span></span>
+<span class="javascript">    demo.style.cssText = <span class="hljs-string">&#x27;font-size:10px;color:blue;background:lightblue&#x27;</span>;</span>
+<span class="javascript">    <span class="hljs-comment">//4</span></span>
+<span class="javascript">    demo.setAttribute(<span class="hljs-string">&#x27;style&#x27;</span>, <span class="hljs-string">&#x27;background:lightgreen;font-size:30px&#x27;</span>);</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre></div><div class="post-tags"> <img src="/images/label.png" height="22px"> <a href="/tags/css/">css</a></div><div class="time"> <small>2021-05-14 14:36</small></div></div></div><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="/posts/fccf7b75">了解Chrome插件</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E6%9D%82%E8%AF%86/">杂识</a></div></div><div class="card-content"><p>Chrome 插件可以笼统的分为五个部分，manifest.json、backgorund、content scripts、popup page、option page，其中 manifest.json 是一个描述文件，囊括插件所有的部署信息。background 一直在后台运行监听事件，content scripts 与页面交互，唯一可以获取页面的 Dom 信息的地方，popup page 插件主体界面，option page 选项界面。</p><div class="read-more"> <a href="/posts/fccf7b75">More...</a></div></div><div class="time"> <small>2021-05-13 11:32</small></div></div></div><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="/posts/4e24c0c7">谭咏麟-讲不出再见</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E5%90%AC%E6%AD%8C/">听歌</a></div></div><div class="card-content"><iframe width="560" height="315" src="https://www.youtube.com/embed/xnf6e1A8yn0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="time"> <small>2021-05-09 14:05</small></div></div></div><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="/posts/45645f90">隐秘的callback 隐秘的快乐</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E8%AE%B0%E5%BD%95/">记录</a></div></div><div class="card-content"><p>讲代码的时候讲到 callback,旁边的大哥和我一样都想到脱口秀大会.</p><p>callback 在我的理解里是前面设下一个不起眼的伏笔,到后面再把伏笔拾起来,当这个从头到尾都不起眼的东西形成一个融洽的逻辑时却能产生一些隐秘的快乐.像是在漫威电影里这种 callback 喜闻乐见,而且即便你注意不到这些细节也并不影响电影情节.</p><p>在大概两三年前我刷推特的时候看到一件 T 恤,在淘宝上没有搜到,前段时间发豆瓣话题的时候又想到这个 T 恤顺便在淘宝上又搜了一下也是没有结果.<br>直到前几天刷微博的时候终于发现了这件 T 恤是来自一个叫做梦家的淘宝店铺,于是生活就在这样莫名的契机里得到融洽,这也算是一种 callback 吧.</p></div><div class="time"> <small>2021-05-08 17:15</small></div></div></div><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="/posts/6cd5756e">一段代码-关于async await</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E4%BB%80%E4%B9%88%E5%8F%AB%E4%BB%96%E5%A6%88%E7%9A%84JS/">什么叫他妈的JS</a></div></div><div class="card-content"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> arrayTest = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>];
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">await</span> asyncForeach(arrayTest, <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> &#123;
+    <span class="hljs-built_in">console</span>.log(data);
+  &#125;);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;inner&#x27;</span>);
+&#125;
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">asyncForeach</span>(<span class="hljs-params">array, callback</span>) </span>&#123;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; array.length; index++) &#123;
+    <span class="hljs-keyword">await</span> callback(array[index]);
+  &#125;
+&#125;
+test();
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;out&#x27;</span>);</code></pre><div class="read-more"> <a href="/posts/6cd5756e">More...</a></div></div><div class="time"> <small>2021-05-08 17:12</small></div></div></div></div><div class="pagination"> <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">下一页</a></div></div><div class="top"> <img src="/images/up.png" class="get-top" width="40px"><span class="number"></span></div></div><script src="/scripts/jquery.min.js"></script><script src="/scripts/jquery.fancybox-1.3.4.pack.js"></script><script src="/scripts/script.js"></script></body></html>

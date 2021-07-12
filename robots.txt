@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /posts/
+
+
+Disallow: /style/
+Disallow: /scripts/
+Disallow: /images/
+Disallow: /page/
+Disallow: /blog_images/
+Disallow: /fancybox/
+
+Sitemap: http://babybluue.github.io/sitemap.xml

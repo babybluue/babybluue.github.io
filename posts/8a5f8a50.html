@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="babyblue的个人博客,学习和扯淡 "><meta name="keywords" content="blog,博客,程序员,记录,技术,学习 "><link rel="shortcut icon" href="/images/favicon.ico"><link rel="stylesheet" href="/style/style.css"><link rel="stylesheet" href="/style/highlight.css"><link rel="stylesheet" href="/fancybox/jquery.fancybox-1.3.4.css"><title>hexo添加搜索功能</title><script>
+      document.onreadystatechange = () => { if (700 < document.body.clientWidth) {  const t = document.querySelector('.header-bar'); (t.style.background = '#91C4E2'),'interactive' == document.readyState && ((t.style.transition = 'width 1.4s ease-in-out'), (t.style.width = '67%')),'complete' == document.readyState &&((t.style.transition = 'width 0.3s ease-in-out'), (t.style.width = '100%'), setTimeout(() => { t.setAttribute( 'style',  "transition:width 0s;width:0;background:''"  );  }, 500)); } };
+    </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="header-bar"></div><div class="main-body"><nav><div class="header"> <a href="/about"><img src="/images/avtar.jpg" class="avtar"></a></div><ul><li> <a href="/">主页</a></li><li> <a href="/archives/">归档</a></li><li> <a href="/about">关于</a></li></ul></nav><div><div class="post-nav"> <a class="post-left" href="/posts/42b47bad"><img src="/images/arrow.png" class="arrow arrow-l"></a> <a class="post-right" href="/posts/117ef761"><img src="/images/arrow.png" class="arrow"></a></div><div class="post-main"><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="javascript:void(0)" rel="external nofollow noreferrer">hexo添加搜索功能</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E6%9D%82%E8%AF%86/">杂识</a></div></div><div class="card-content"><p>随着东西越来越多，终于该为博客添加搜索功能了，以前想想就觉得会很麻烦，现在不得不铁着头试一下了。这里用的终究是别人做好的插件，hexo-generator-search。</p><span id="more"></span><h3 id="hexo-generator-search-插件"><a href="#hexo-generator-search-插件" class="headerlink" title="hexo-generator-search 插件"></a>hexo-generator-search 插件</h3><ul><li><p>安装</p><pre><code class="hljs bash">$ npm install hexo-generator-search</code></pre></li><li><p>配置<br>安装模块之后在 hexo 的根目录的_config 配置</p><pre><code class="hljs yaml"><span class="hljs-attr">search:</span>
+<span class="hljs-attr">path:</span> <span class="hljs-string">search.json</span>
+<span class="hljs-attr">field:</span> <span class="hljs-string">post</span>
+<span class="hljs-attr">content:</span> <span class="hljs-literal">true</span></code></pre><p>插件会在 hexo g 之后生成 search.json 文件，如果 path 的配置是 *.xml 生成的是 xml 格式文件</p></li><li><p>屏蔽搜索<br>在博客 markdown 的顶部信息里添加 <code>indexing:false</code></p><pre><code class="hljs yaml"><span class="hljs-meta">---</span>
+<span class="hljs-attr">title:</span> <span class="hljs-string">hexo</span> <span class="hljs-string">添加搜索功能</span>
+<span class="hljs-attr">tags:</span> <span class="hljs-string">hexo</span>
+<span class="hljs-attr">indexing:</span> <span class="hljs-literal">false</span>
+<span class="hljs-meta">---</span></code></pre></li></ul><h3 id="补充代码"><a href="#补充代码" class="headerlink" title="补充代码"></a>补充代码</h3><ul><li><p>添加搜索框</p><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;search-area&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    &lt;input
+      type=&quot;text&quot;
+      id=&quot;search-input&quot;
+      autocomplete=&quot;off&quot;
+      placeholder=&quot;搜索内容&quot;
+    /&gt;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;search-result&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></li><li><p>添加 js 代码</p><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> searchFunc = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">path, search_id, content_id</span>) </span>&#123;
+  <span class="hljs-keyword">const</span> resultContent = <span class="hljs-built_in">document</span>.getElementById(content_id);
+  <span class="hljs-keyword">const</span> input = <span class="hljs-built_in">document</span>.getElementById(search_id);
+  <span class="hljs-keyword">if</span> (!input) <span class="hljs-keyword">return</span>;
+  fetch(path)
+    .then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> response.json())
+    .then(<span class="hljs-function">(<span class="hljs-params">blogs</span>) =&gt;</span> &#123;
+      input.addEventListener(<span class="hljs-string">&#x27;input&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">const</span> keywords = <span class="hljs-built_in">this</span>.value
+          .trim()
+          .toLowerCase()
+          .split(<span class="hljs-regexp">/[\s\-]+/</span>);
+        resultContent.innerHTML = <span class="hljs-string">&#x27;&#x27;</span>;
+        <span class="hljs-keyword">let</span> content = <span class="hljs-string">&#x27;&#x27;</span>;
+        <span class="hljs-keyword">if</span> (keywords.length === <span class="hljs-number">1</span> &amp;&amp; keywords[<span class="hljs-number">0</span>].length === <span class="hljs-number">0</span>) &#123;
+          <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-comment">// perform local searching</span>
+        blogs.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">blog</span>) </span>&#123;
+          <span class="hljs-keyword">let</span> isMatch = <span class="hljs-literal">true</span>;
+          <span class="hljs-keyword">if</span> (!blog.title || blog.title.trim() === <span class="hljs-string">&#x27;&#x27;</span>) &#123;
+            blog.title = <span class="hljs-string">&#x27;Untitled&#x27;</span>;
+          &#125;
+          <span class="hljs-keyword">const</span> data_title = blog.title.trim().toLowerCase();
+          <span class="hljs-keyword">const</span> data_content = blog.content
+            .trim()
+            .replace(<span class="hljs-regexp">/&lt;[^&gt;]+&gt;/g</span>, <span class="hljs-string">&#x27;&#x27;</span>)
+            .toLowerCase();
+          <span class="hljs-keyword">const</span> data_url = blog.url;
+          <span class="hljs-keyword">let</span> index_title = -<span class="hljs-number">1</span>;
+          <span class="hljs-keyword">let</span> index_content = -<span class="hljs-number">1</span>;
+          <span class="hljs-keyword">let</span> first_occur = -<span class="hljs-number">1</span>;
+          <span class="hljs-comment">// only match artiles with not empty contents</span>
+          <span class="hljs-keyword">if</span> (data_content !== <span class="hljs-string">&#x27;&#x27;</span>) &#123;
+            keywords.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">keyword, i</span>) </span>&#123;
+              index_title = data_title.indexOf(keyword);
+              index_content = data_content.indexOf(keyword);
+              <span class="hljs-keyword">if</span> (index_title &lt; <span class="hljs-number">0</span> &amp;&amp; index_content &lt; <span class="hljs-number">0</span>) &#123;
+                isMatch = <span class="hljs-literal">false</span>;
+              &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-keyword">if</span> (index_content &lt; <span class="hljs-number">0</span>) &#123;
+                  index_content = <span class="hljs-number">0</span>;
+                &#125;
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) &#123;
+                  first_occur = index_content;
+                &#125;
+              &#125;
+            &#125;);
+          &#125;
+          <span class="hljs-comment">// show search results</span>
+          <span class="hljs-keyword">if</span> (isMatch) &#123;
+            content += <span class="hljs-string">`&lt;li&gt;&lt;a href=&quot;<span class="hljs-subst">$&#123;data_url&#125;</span>&quot; class=&quot;search-title&quot;&gt;<span class="hljs-subst">$&#123;data_title&#125;</span>&lt;/a&gt;`</span>;
+            <span class="hljs-keyword">if</span> (first_occur &gt;= <span class="hljs-number">0</span>) &#123;
+              <span class="hljs-comment">// cut out 100 characters</span>
+              <span class="hljs-keyword">var</span> start = first_occur - <span class="hljs-number">20</span>;
+              <span class="hljs-keyword">var</span> end = first_occur + <span class="hljs-number">80</span>;
+              <span class="hljs-keyword">if</span> (start &lt; <span class="hljs-number">0</span>) &#123;
+                start = <span class="hljs-number">0</span>;
+              &#125;
+              <span class="hljs-keyword">if</span> (start == <span class="hljs-number">0</span>) &#123;
+                end = <span class="hljs-number">100</span>;
+              &#125;
+              <span class="hljs-keyword">if</span> (end &gt; data_content.length) &#123;
+                end = data_content.length;
+              &#125;
+              <span class="hljs-keyword">var</span> match_content = data_content.substring(start, end);
+              <span class="hljs-comment">// highlight all keywords</span>
+              keywords.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">keyword</span>) </span>&#123;
+                <span class="hljs-keyword">var</span> regS = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(keyword, <span class="hljs-string">&#x27;gi&#x27;</span>);
+                match_content = match_content.replace(
+                  regS,
+                  <span class="hljs-string">`&lt;span class=&quot;search-keyword&quot;&gt;<span class="hljs-subst">$&#123;keyword&#125;</span>&lt;/span&gt;`</span>
+                );
+              &#125;);
+              content += <span class="hljs-string">`&lt;p class=&quot;search-content&quot;&gt;<span class="hljs-subst">$&#123;match_content&#125;</span>...&lt;/p&gt;`</span>;
+            &#125;
+            content += <span class="hljs-string">&#x27;&lt;/li&gt;&#x27;</span>;
+          &#125;
+        &#125;);
+        <span class="hljs-keyword">if</span> (content.length &gt; <span class="hljs-number">0</span>) &#123;
+          <span class="hljs-keyword">let</span> str = <span class="hljs-string">`&lt;ul class=&quot;search-result-list&quot;&gt;<span class="hljs-subst">$&#123;content&#125;</span>&lt;/ul&gt;`</span>;
+          resultContent.innerHTML = str;
+        &#125;
+      &#125;);
+    &#125;);
+&#125;;
+searchFunc(<span class="hljs-string">&#x27;/search.json&#x27;</span>, <span class="hljs-string">&#x27;search-input&#x27;</span>, <span class="hljs-string">&#x27;search-result&#x27;</span>);</code></pre></li></ul><hr><p>参考链接:<br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/wzpan/hexo-generator-search">hexo-generator-search github</a></p></div><div class="post-tags"> <img src="/images/label.png" height="22px"> <a href="/tags/hexo/">hexo</a></div><div class="time"> <small>2021-04-29 09:59</small></div></div></div><div class="post-pagination"><div class="prev-page"> <a href="/posts/42b47bad" title="张国荣-春夏秋冬">张国荣-春夏秋冬</a></div><div class="next-page"> <a href="/posts/117ef761" title="vim操作命令指北 ">vim操作命令指北</a></div></div></div></div><div class="top"> <img src="/images/up.png" class="get-top" width="40px"><span class="number"></span></div></div><script src="/scripts/jquery.min.js"></script><script src="/scripts/jquery.fancybox-1.3.4.pack.js"></script><script src="/scripts/script.js"></script></body></html>

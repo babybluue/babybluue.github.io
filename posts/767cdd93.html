@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="babyblue的个人博客,学习和扯淡 "><meta name="keywords" content="blog,博客,程序员,记录,技术,学习 "><link rel="shortcut icon" href="/images/favicon.ico"><link rel="stylesheet" href="/style/style.css"><link rel="stylesheet" href="/style/highlight.css"><link rel="stylesheet" href="/fancybox/jquery.fancybox-1.3.4.css"><title>网页加载进度条</title><script>
+      document.onreadystatechange = () => { if (700 < document.body.clientWidth) {  const t = document.querySelector('.header-bar'); (t.style.background = '#91C4E2'),'interactive' == document.readyState && ((t.style.transition = 'width 1.4s ease-in-out'), (t.style.width = '67%')),'complete' == document.readyState &&((t.style.transition = 'width 0.3s ease-in-out'), (t.style.width = '100%'), setTimeout(() => { t.setAttribute( 'style',  "transition:width 0s;width:0;background:''"  );  }, 500)); } };
+    </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="header-bar"></div><div class="main-body"><nav><div class="header"> <a href="/about"><img src="/images/avtar.jpg" class="avtar"></a></div><ul><li> <a href="/">主页</a></li><li> <a href="/archives/">归档</a></li><li> <a href="/about">关于</a></li></ul></nav><div><div class="post-nav"> <a class="post-left" href="/posts/c85f1380"><img src="/images/arrow.png" class="arrow arrow-l"></a> <a class="post-right" href="/posts/a37770e5"><img src="/images/arrow.png" class="arrow"></a></div><div class="post-main"><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="javascript:void(0)" rel="external nofollow noreferrer">网页加载进度条</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/html/">html</a></div></div><div class="card-content"><p>document.readyState 属性描述了文档的加载状态，发生变化时，会在 document 对象上触发 readyStateChange 事件。<br>document.readyState 有三种状态，loading、interactive、complete</p><ul><li>loading document 仍在加载</li><li>interactive 文档已被解析，”正在加载”状态结束，但是诸如图像，样式表和框架之类的子资源仍在加载。</li><li>complete 文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。</li></ul><span id="more"></span><p>DOMContentLoaded 与 load 事件:</p><blockquote><p>The load event is fired when the whole page has loaded, including all dependent resources such as stylesheets and images. This is in contrast to DOMContentLoaded, which is fired as soon as the page DOM has been loaded, without waiting for resources to finish loading.</p></blockquote><pre><code class="hljs javascript"><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&#x27;load&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;load&#x27;</span>);
+&#125;);
+
+<span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">&#x27;readystatechange&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">document</span>.readyState);
+&#125;);
+
+<span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">&#x27;DOMContentLoaded&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;COMContentLoaded&#x27;</span>);
+&#125;);</code></pre><p>运行结果:<br>interactive COMContentLoaded complete load</p><p>于是可以根据文档的加载属性 document.readyState 捕捉到不同的加载状态来设置加载动画。</p><pre><code class="hljs javascript"><span class="hljs-built_in">document</span>.onreadystatechange = <span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> headBar = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;.header-bar&#x27;</span>);
+  headBar.style.background = <span class="hljs-string">&#x27;lightblue&#x27;</span>;
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.readyState == <span class="hljs-string">&#x27;interactive&#x27;</span>) &#123;
+    headBar.style.transition = <span class="hljs-string">&#x27;width 1.4s ease-in-out&#x27;</span>;
+    headBar.style.width = <span class="hljs-string">&#x27;67%&#x27;</span>;
+  &#125;
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.readyState == <span class="hljs-string">&#x27;complete&#x27;</span>) &#123;
+    headBar.style.transition = <span class="hljs-string">&#x27;width 0.3s ease-in-out&#x27;</span>;
+    headBar.style.width = <span class="hljs-string">&#x27;100%&#x27;</span>;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+      headBar.setAttribute(
+        <span class="hljs-string">&#x27;style&#x27;</span>,
+        <span class="hljs-string">&quot;transition:width 0s;width:0;background:&#x27;&#x27;&quot;</span>
+      );
+    &#125;, <span class="hljs-number">500</span>);
+  &#125;
+&#125;;</code></pre></div><div class="time"> <small>2021-03-24 16:14</small></div></div></div><div class="post-pagination"><div class="prev-page"> <a href="/posts/c85f1380" title="Bakgorund属性">Bakgorund属性</a></div><div class="next-page"> <a href="/posts/a37770e5" title="页面阅读进度 ">页面阅读进度</a></div></div></div></div><div class="top"> <img src="/images/up.png" class="get-top" width="40px"><span class="number"></span></div></div><script src="/scripts/jquery.min.js"></script><script src="/scripts/jquery.fancybox-1.3.4.pack.js"></script><script src="/scripts/script.js"></script></body></html>

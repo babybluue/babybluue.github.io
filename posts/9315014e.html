@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="babyblue的个人博客,学习和扯淡 "><meta name="keywords" content="blog,博客,程序员,记录,技术,学习 "><link rel="shortcut icon" href="/images/favicon.ico"><link rel="stylesheet" href="/style/style.css"><link rel="stylesheet" href="/style/highlight.css"><link rel="stylesheet" href="/fancybox/jquery.fancybox-1.3.4.css"><title>关于JavaScript里的this</title><script>
+      document.onreadystatechange = () => { if (700 < document.body.clientWidth) {  const t = document.querySelector('.header-bar'); (t.style.background = '#91C4E2'),'interactive' == document.readyState && ((t.style.transition = 'width 1.4s ease-in-out'), (t.style.width = '67%')),'complete' == document.readyState &&((t.style.transition = 'width 0.3s ease-in-out'), (t.style.width = '100%'), setTimeout(() => { t.setAttribute( 'style',  "transition:width 0s;width:0;background:''"  );  }, 500)); } };
+    </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="header-bar"></div><div class="main-body"><nav><div class="header"> <a href="/about"><img src="/images/avtar.jpg" class="avtar"></a></div><ul><li> <a href="/">主页</a></li><li> <a href="/archives/">归档</a></li><li> <a href="/about">关于</a></li></ul></nav><div><div class="post-nav"> <a class="post-left" href="/posts/a37770e5"><img src="/images/arrow.png" class="arrow arrow-l"></a> <a class="post-right" href="/posts/c62cf7f9"><img src="/images/arrow.png" class="arrow"></a></div><div class="post-main"><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="javascript:void(0)" rel="external nofollow noreferrer">关于JavaScript里的this</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E4%BB%80%E4%B9%88%E5%8F%AB%E4%BB%96%E5%A6%88%E7%9A%84JS/">什么叫他妈的JS</a></div></div><div class="card-content"><h3 id="this-的两个误解"><a href="#this-的两个误解" class="headerlink" title="this 的两个误解"></a>this 的两个误解</h3><ul><li>this 指向函数自身?</li></ul><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.count);
+&#125;
+<span class="hljs-keyword">var</span> count = <span class="hljs-number">1</span>;
+test(); <span class="hljs-comment">// 1</span></code></pre><ul><li>this 指向函数的作用域?</li></ul><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+  bar(); <span class="hljs-comment">//bar()处于foo()的作用域中</span>
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bar</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(a); <span class="hljs-comment">//2</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a); <span class="hljs-comment">//undefined</span>
+&#125;
+foo();</code></pre><span id="more"></span><blockquote><p>this 是在运行时绑定的，并不是在编写时绑定的，它的上下文取决于函数调用时的各种条件，this 的绑定和函数声明的位置没有任何关系，只取决于函数的调用方式。<br>当一个函数被调用时，会创建一个活动记录(执行上下文)。这个记录会包含函数在哪里被调用(调用栈)、函数的调用方式、传入的参数等信息，this 就是这个记录的一个属性，会在函数执行的过程中用到。</p></blockquote><h3 id="this-的绑定规则"><a href="#this-的绑定规则" class="headerlink" title="this 的绑定规则"></a>this 的绑定规则</h3><ul><li><p><strong>默认绑定</strong></p><p>无法应用其他规则时的默认规则</p></li></ul><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+foo(); <span class="hljs-comment">//2</span></code></pre><p>上面的例子中，this 指向的是全局对象，而 a 是声明在全局作用域中的变量，于是 this.a 即打印了变量 a 的值。当 foo()运行在严格模式下时，默认绑定不能绑定全局对象，打印结果会是 undefined</p><ul><li><p><strong>隐式绑定</strong></p><p>调用位置是否有上下文对象，或者是否被某个对象’拥有’或者’包含’。</p></li></ul><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123;
+  a: <span class="hljs-number">2</span>,
+  foo: foo,
+&#125;;
+obj.foo(); <span class="hljs-comment">//2</span></code></pre><p>上例中调用位置使用 obj 上下文来引用函数，可以看成函数被调用时它就属于了 obj 对象。当函数引用有上下文对象时，隐式绑定规则会把函数调用中的 this 绑定到这个上下文对象。</p><p><em>隐式丢失</em></p><pre><code class="hljs javascript"><span class="hljs-comment">//隐式丢失</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123;
+  a: <span class="hljs-number">2</span>,
+  foo: foo,
+&#125;;
+<span class="hljs-keyword">var</span> bar = obj.foo;
+<span class="hljs-comment">//bar实际上引用的是foo函数本身，此时的bar()是一个不带任何修饰的函数调用</span>
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;wuhu&#x27;</span>;
+bar(); <span class="hljs-comment">//wuhu</span></code></pre><p>同样，在将函数作为参数传递时也会发生赋值，只不过这是一种隐式赋值。</p><pre><code class="hljs javascript"><span class="hljs-comment">//隐式丢失</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a);
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doFoo</span>(<span class="hljs-params">fn</span>) </span>&#123;
+  fn(); <span class="hljs-comment">//传递的函数实际的调用位置，js引擎应用默认调用规则</span>
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123;
+  a: <span class="hljs-number">2</span>,
+  foo: foo,
+&#125;;
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;wuhu&#x27;</span>;
+doFoo(obj.foo); <span class="hljs-comment">//wuhu</span></code></pre><ul><li><p><strong>显示绑定</strong></p><p>不在对象内部包含函数引用，而是在某个对象上强制调用函数，函数的 call()和 apply()方法,bind()方法</p></li></ul><p>call()和 apply()的第一个参数是用来绑定 this 的，可以直接指定 this 的绑定对象。如果传入的是一个非对象类型，比如字符串或者数字，会被转化成它的对象形式(new String()、new Number())。</p><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123;
+  a: <span class="hljs-number">2</span>,
+&#125;;
+<span class="hljs-comment">//把foo的this强行绑定到obj上</span>
+foo.call(obj); <span class="hljs-comment">//2</span></code></pre><p>apply()和 call()作用完全一样，只是接受参数的方式不一样</p><pre><code class="hljs javascript">func.call(<span class="hljs-built_in">this</span>, arg1, arg2);
+func.apply(<span class="hljs-built_in">this</span>, [arg1, arg2]);</code></pre><p><em>硬绑定</em></p><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">something</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a, something);
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.a + somethig;
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123;
+  a: <span class="hljs-number">2</span>,
+&#125;;
+<span class="hljs-keyword">var</span> bar = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">return</span> foo.apply(obj, <span class="hljs-built_in">arguments</span>);
+  <span class="hljs-comment">/*arguments 是一个函数的局部变量。</span>
+<span class="hljs-comment">  它可以被用作被调用对象的所有未指定的参数。</span>
+<span class="hljs-comment">  这样，你在使用apply函数的时候就不需要知道被调用对象的所有参数。</span>
+<span class="hljs-comment">  你可以使用arguments来把所有的参数传递给被调用对象</span>
+<span class="hljs-comment">  被调用对象接下来就负责处理这些参数。*/</span>
+&#125;;
+<span class="hljs-keyword">var</span> b = bar(<span class="hljs-number">3</span>); <span class="hljs-comment">//2 3</span>
+<span class="hljs-built_in">console</span>.log(b); <span class="hljs-comment">//5</span></code></pre><p>在上面的例子里，无论如何调用 bar 函数，它都会永远会返回 foo 被绑定后的结果，这种显示的强制绑定为硬绑定。</p><p>bind()函数就是为了方便硬绑定而出现的函数</p><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">something</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.a, something);
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.a + something;
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123;
+  a: <span class="hljs-number">2</span>,
+&#125;;
+<span class="hljs-keyword">var</span> bar = foo.bind(obj);
+<span class="hljs-keyword">var</span> b = bar(<span class="hljs-number">3</span>); <span class="hljs-comment">//2 3</span>
+<span class="hljs-built_in">console</span>.log(bar); <span class="hljs-comment">// 5</span></code></pre><p>bind()会返回一个硬编码的新函数–它会把你指定的参数设置为 this 的上下文并调用原始函数</p><p><em>API 调用的’上下文’</em></p><p>第三方库的一些函数，JavaScript 语言和宿主环境中许多新的内置函数都提供一个可选的参数，通常被称为上下文(context),其作用和 bind()一样，确保调用函数使用指定的 this</p><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">el</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(el, <span class="hljs-built_in">this</span>.id);
+&#125;
+<span class="hljs-keyword">var</span> obj = &#123;
+  id: <span class="hljs-string">&#x27;hello motherfucker&#x27;</span>,
+&#125;;
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].forEach(foo, obj);
+<span class="hljs-comment">//1 hello... 2 hello... 3 hello...</span></code></pre><p>forEach 的第二个参数，绑定回调时函数的 this 值</p><ul><li><strong>new 绑定</strong></li></ul><p>JavaScript 里的构造函数:</p><blockquote><p>构造函数只是一些使用 new 操作符时被调用的函数。它们并不会属于某个类，也不会实例化一个类。实际上，它们甚至都不能说是一种特殊的函数类型，它们只是被 new 操作符调用的普通函数而已，这种函数调用被称为构造函数调用。</p></blockquote><blockquote><p>实际上并不存在所谓的‘构造函数’，只有对于函数的‘构造调用’</p></blockquote><p>使用 new 来调用函数会自动执行下面的操作:</p><ol><li>创建一个全新的对象</li><li>这个新对象会被执行[Prototype]连接</li><li>这个新对象会绑定到函数调用的 this</li><li>如果函数没有返回其他对象，那么 new 表达式中的函数调用会自动返回这个新对象</li></ol><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>(<span class="hljs-params">a</span>) </span>&#123;
+  <span class="hljs-built_in">this</span>.a = a;
+&#125;
+<span class="hljs-keyword">var</span> bar = <span class="hljs-keyword">new</span> foo(<span class="hljs-number">2</span>);
+<span class="hljs-built_in">console</span>.log(bar.a); <span class="hljs-comment">//2</span>
+<span class="hljs-built_in">console</span>.log(bar); <span class="hljs-comment">// foo &#123;a:2&#125;</span></code></pre></div><div class="post-tags"> <img src="/images/label.png" height="22px"> <a href="/tags/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84JavaScript/">你不知道的JavaScript</a></div><div class="time"> 2021-07-12 17:48 <span style="color:#f08080">updated</span></div></div></div><div class="post-pagination"><div class="prev-page"> <a href="/posts/a37770e5" title="页面阅读进度">页面阅读进度</a></div><div class="next-page"> <a href="/posts/c62cf7f9" title="回到顶部与页面滚动设置 ">回到顶部与页面滚动设置</a></div></div></div></div><div class="top"> <img src="/images/up.png" class="get-top" width="40px"><span class="number"></span></div></div><script src="/scripts/jquery.min.js"></script><script src="/scripts/jquery.fancybox-1.3.4.pack.js"></script><script src="/scripts/script.js"></script></body></html>

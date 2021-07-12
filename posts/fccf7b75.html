@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="babyblue的个人博客,学习和扯淡 "><meta name="keywords" content="blog,博客,程序员,记录,技术,学习 "><link rel="shortcut icon" href="/images/favicon.ico"><link rel="stylesheet" href="/style/style.css"><link rel="stylesheet" href="/style/highlight.css"><link rel="stylesheet" href="/fancybox/jquery.fancybox-1.3.4.css"><title>了解Chrome插件</title><script>
+      document.onreadystatechange = () => { if (700 < document.body.clientWidth) {  const t = document.querySelector('.header-bar'); (t.style.background = '#91C4E2'),'interactive' == document.readyState && ((t.style.transition = 'width 1.4s ease-in-out'), (t.style.width = '67%')),'complete' == document.readyState &&((t.style.transition = 'width 0.3s ease-in-out'), (t.style.width = '100%'), setTimeout(() => { t.setAttribute( 'style',  "transition:width 0s;width:0;background:''"  );  }, 500)); } };
+    </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="header-bar"></div><div class="main-body"><nav><div class="header"> <a href="/about"><img src="/images/avtar.jpg" class="avtar"></a></div><ul><li> <a href="/">主页</a></li><li> <a href="/archives/">归档</a></li><li> <a href="/about">关于</a></li></ul></nav><div><div class="post-nav"> <a class="post-left" href="/posts/29a04aae"><img src="/images/arrow.png" class="arrow arrow-l"></a> <a class="post-right" href="/posts/4e24c0c7"><img src="/images/arrow.png" class="arrow"></a></div><div class="post-main"><div class="post"><div class="post-card"><div class="card-header"><div class="header-title"> <a href="javascript:void(0)" rel="external nofollow noreferrer">了解Chrome插件</a></div><div class="post-category"> <span>分类:</span> <a href="/categories/%E6%9D%82%E8%AF%86/">杂识</a></div></div><div class="card-content"><p>Chrome 插件可以笼统的分为五个部分，manifest.json、backgorund、content scripts、popup page、option page，其中 manifest.json 是一个描述文件，囊括插件所有的部署信息。background 一直在后台运行监听事件，content scripts 与页面交互，唯一可以获取页面的 Dom 信息的地方，popup page 插件主体界面，option page 选项界面。</p><span id="more"></span><p>Chrome 插件在 2021.1.19 推出了 V3 版本，因此这里讲的都是 V3 版本。</p><ul><li><p>manifest.json</p><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;demo&quot;</span>,
+  <span class="hljs-attr">&quot;description&quot;</span>: <span class="hljs-string">&quot;this is a demo&quot;</span>,
+  <span class="hljs-attr">&quot;version&quot;</span>: <span class="hljs-string">&quot;1.0&quot;</span>,
+  <span class="hljs-attr">&quot;manifest_version&quot;</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-comment">//有了上面的基本配置信息就可以直接在浏览器里加载出来一个插件。</span>
+  <span class="hljs-attr">&quot;action&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;default_popup&quot;</span>: <span class="hljs-string">&quot;popup.html&quot;</span>,
+    <span class="hljs-attr">&quot;default_icon&quot;</span>: <span class="hljs-string">&quot;icon.png&quot;</span>, <span class="hljs-comment">//导航栏右侧展示的icon</span>
+    <span class="hljs-attr">&quot;default_title&quot;</span>: <span class="hljs-string">&quot;wukong design&quot;</span>
+  &#125;,
+  <span class="hljs-attr">&quot;icons&quot;</span>: &#123; <span class="hljs-attr">&quot;128&quot;</span>: <span class="hljs-string">&quot;icon.png&quot;</span> &#125;, <span class="hljs-comment">//扩展程序列表的icon</span>
+  <span class="hljs-attr">&quot;background&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;service_worker&quot;</span>: <span class="hljs-string">&quot;backgorund.js&quot;</span>
+  &#125;,
+  <span class="hljs-attr">&quot;permissions&quot;</span>: [
+    <span class="hljs-string">&quot;notifications&quot;</span>,
+    <span class="hljs-string">&quot;tabs&quot;</span>,
+    <span class="hljs-string">&quot;webRequest&quot;</span>,
+    <span class="hljs-string">&quot;storage&quot;</span>,
+    <span class="hljs-string">&quot;activeTab&quot;</span>,
+    <span class="hljs-string">&quot;scripting&quot;</span>,
+    <span class="hljs-string">&quot;declarativeContent&quot;</span>
+  ],
+  <span class="hljs-attr">&quot;host_permissions&quot;</span>: [],
+  <span class="hljs-attr">&quot;content_scripts&quot;</span>: [
+    &#123;
+      <span class="hljs-attr">&quot;matches&quot;</span>: [<span class="hljs-string">&quot;https://www.baidu.com/&quot;</span>],
+      <span class="hljs-attr">&quot;run_at&quot;</span>: <span class="hljs-string">&quot;document_idle&quot;</span>,
+      <span class="hljs-attr">&quot;js&quot;</span>: [<span class="hljs-string">&quot;js/contentScript.js&quot;</span>],
+      <span class="hljs-attr">&quot;css&quot;</span>: []
+    &#125;
+  ],
+  <span class="hljs-attr">&quot;options_page&quot;</span>: <span class="hljs-string">&quot;options.html&quot;</span>
+&#125;</code></pre><p>配置文件的 action 指的是插件在启用后显示的图标、标题以及在点击之后出现的界面。在 API 里有个 chrome.action 就是作用在这个地方的一些功能。在 V2 版本里，action 又分为 page action 和 browser action，page 是在特定特面生效，而 browser 在所有的页面生效。<br> permissions 顾名思义就是在这个地方声明需要用到的权限，tabs 是用来获取选项卡信息，storage 的存储功能跟页面的 localStorage 相似，scripting 在当前网页里嵌入 script 脚本。<br> host_permsissions 在这里指明插件需要请求的后台网址，这样就不会受到跨域限制。在 V2 版本里，host_permissions 与 permissions 写在一起。<br> content_scirpts 在匹配到指定的网址后加载指定的 js 文件，可以与该页面交互，操作 Dom。</p></li><li><p>background<br>插件是事件驱动型的程序，通过监听事件以修改和增强网页浏览体验，例如监听新页面的加载，书签的变化，标签栏的变化。插件利用后台的 service worker 脚本文件一直在后台运行以监控浏览器的变化对不同的事件及时作出反应。<br>在 V2 版本里，background 可以是一个 page 即 html，但在 V3 版本里 servcie_worker 只能是 js 文件。另外，service_worker 所指定的文件必须在根目录里，不能包含在其他目录中。</p><pre><code class="hljs javascript">chrome.runtime.onMessage.addListener(<span class="hljs-function">(<span class="hljs-params">message</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">if</span> (message == <span class="hljs-string">&#x27;notify&#x27;</span>) &#123;
+    registration.showNotification(<span class="hljs-string">&#x27;&#x27;</span>, &#123;
+      body: <span class="hljs-string">&#x27;网络请求成功&#x27;</span>,
+      icon: <span class="hljs-string">&#x27;images/icon.png&#x27;</span>,
+    &#125;);
+  &#125;
+&#125;);</code></pre><p>backgorund 可以使用插件所有的 API，写这篇文章的时候，在 background 里使用 chrome.notifications.create()接口会出现问题，看到 stackflow 上讲这是目前 V3 版本存在的 bug，可以用上面的方法替换，V2 版本正常。</p></li><li><p>content scripts</p><pre><code class="hljs javascript">chrome.runtime.sendMessage(<span class="hljs-string">&#x27;notify&#x27;</span>);
+<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;#s_kw_wrap input&#x27;</span>).value = <span class="hljs-string">&#x27;hello motherfucker&#x27;</span>;
+<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;#s_btn_wr input&#x27;</span>).click();</code></pre><p>content scripts 能够获取网页的 Dom 信息与网页直接交互，因此可以加载 js 或者 css 文件对页面进行操作和修改。但是它只能直接获取部分的 API：<em>runtime</em> <em>storage</em> 和 <em>i18n</em> ，注入脚本有两个方式，静态注入(本例)或者在代码里手动注入。<br>content scripts 在一个隔绝的环境里，与它所在的选项卡绑定在一起，因此打开几个匹配的页面就会运行几个执行文件，而这几个不同的执行文件之间由所在选项卡 Id 区分。因此想要向某个网页的 content script 发送信息时需要指定 tab Id，如 chrome.tabs.sendMessage(tabId,message)。</p></li><li><p>popup page 和 options page<br>分别是弹出界面和选项界面，和普通 html 网页相似，可以加入 js 和 css 文件。</p></li><li><p>常用的 API</p><ul><li>action 修改插件 icon 界面的图标、徽标、标题信息</li><li>notification 发送通知</li><li>runtime 通信</li><li>scripting 向 web 嵌入脚本</li><li>storage 相当于 localStorage</li><li>tabs 关于选项卡信息，每个选项卡都有一个 id</li><li>webRequest 网络请求</li></ul></li></ul><hr><p>参考链接：<br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://developer.chrome.com/docs/extensions/mv3/">Chrome 插件官方文档</a></p></div><div class="time"> <small>2021-05-13 11:32</small></div></div></div><div class="post-pagination"><div class="prev-page"> <a href="/posts/29a04aae" title="一段话">一段话</a></div><div class="next-page"> <a href="/posts/4e24c0c7" title="谭咏麟-讲不出再见 ">谭咏麟-讲不出再见</a></div></div></div></div><div class="top"> <img src="/images/up.png" class="get-top" width="40px"><span class="number"></span></div></div><script src="/scripts/jquery.min.js"></script><script src="/scripts/jquery.fancybox-1.3.4.pack.js"></script><script src="/scripts/script.js"></script></body></html>
