@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /posts
+
+
+Disallow: /archives
+Disallow: /images
+Disallow: /program
+Disallow: /read
+Disallow: /words
+Disallow: /categories
+Disallow: /tags
+Disallow: /blog_images
+
+
+Sitemap: http://babybluue.github.io/sitemap.xml

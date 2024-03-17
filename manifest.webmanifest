@@ -1,0 +1,33 @@
+{
+  "name": "Babyblue",
+  "short_name": "Babyblue",
+  "description": "My site on github",
+  "start_url": "https://babybluue.github.io/",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/images/appleicon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/avatar.png",
+      "type": "image/png",
+      "sizes": "843x843"
+    },
+    {
+      "src": "/images/appleicon.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/avatar.png",
+      "type": "image/png",
+      "sizes": "843x843",
+      "purpose": "maskable"
+    }
+  ]
+}
